@@ -1,0 +1,19 @@
+{
+  "sortImports": true,
+  "sortTailwindcss": true,
+  "singleQuote": true,
+  "jsxSingleQuote": false,
+  "semi": true,
+  "tabWidth": 2,
+  "useTabs": false,
+  "printWidth": 100,
+  "trailingComma": "all",
+  "bracketSpacing": true,
+  "bracketSameLine": false,
+  "quoteProps": "as-needed",
+  "arrowParens": "always",
+  "endOfLine": "lf",
+  "insertFinalNewline": true,
+  "sortPackageJson": true,
+  "ignorePatterns": [".next/**", "node_modules/**", "out/**"]
+}
