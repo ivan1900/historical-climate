@@ -8,6 +8,10 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 <!-- END:nextjs-agent-rules -->
 
+# About this app
+
+This app show historical climate data for a given location in spain. It uses aemet api to get the data and mantine ui to show it.
+
 # Custom skills
 
 | Skill | When to use                                           | Where                       |
