@@ -14,6 +14,6 @@ This app show historical climate data for a given location in spain. It uses aem
 
 # Custom skills
 
-| Skill | When to use                                           | Where                       |
-| ----- | ----------------------------------------------------- | --------------------------- |
-| UI    | Use when you need to change something in the frontend | `./skills/mantine/SKILL.md` |
+| Skill | When to use                                           | Where                              |
+| ----- | ----------------------------------------------------- | ---------------------------------- |
+| UI    | Use when you need to change something in the frontend | `./agents/skills/mantine/SKILL.md` |

@@ -1,0 +1,30 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model data_monthly {
+  id           Int      @id(map: "data_monthly_pk") @default(autoincrement())
+  idema        String   @db.VarChar(20)
+  temp_min     Decimal? @db.Decimal(2, 2)
+  temp_max     Decimal? @db.Decimal(2, 2)
+  temp_avg     Decimal? @db.Decimal(2, 2)
+  month        Int?     @db.SmallInt
+  year         Int?     @db.SmallInt
+  rainfall_med Decimal? @db.Decimal(2, 2)
+  rain_days    Int?     @db.SmallInt
+  snow_days    Int?     @db.SmallInt
+}
+
+model stations {
+  id        Int     @id(map: "stations_pk") @default(autoincrement())
+  idema     String? @db.VarChar(20)
+  altitude  String? @db.VarChar(10)
+  name      String? @db.VarChar(100)
+  latitude  String? @db.VarChar(20)
+  longitude String? @db.VarChar(20)
+}

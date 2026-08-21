@@ -9,7 +9,9 @@
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
     "format": "oxfmt",
-    "format:check": "oxfmt --check"
+    "format:check": "oxfmt --check",
+    "prisma:pull": "prisma db pull",
+    "prisma:generate": "prisma generate"
   },
   "dependencies": {
     "@mantine/charts": "^9.5.1",
@@ -34,6 +36,8 @@
     "@types/react-dom": "^19",
     "oxfmt": "^0.63.0",
     "oxlint": "^1.78.0",
+    "postcss-preset-mantine": "^1.18.0",
+    "postcss-simple-vars": "^7.0.1",
     "prisma": "^7.9.1",
     "tailwindcss": "^4.3.3",
     "typescript": "^7.0.2"
