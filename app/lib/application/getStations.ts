@@ -9,7 +9,7 @@ type StationData = {
   longitud: string;
 };
 
-export default async function getStations() {
+export default async function fetchAemetStations() {
   const stationsURL = await preFetchStations();
   const stationsResponse = await fetch(stationsURL, {
     method: 'GET',
