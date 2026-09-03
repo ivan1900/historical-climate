@@ -1,36 +1,36 @@
 export type MonthDataDTO = {
   idema: string;
-  tempMin: number;
-  tempMax: number;
-  tempAvg: number;
+  tempMin: number | null;
+  tempMax: number | null;
+  tempAvg: number | null;
   date: Date;
   isYearStatistics: boolean;
-  rainfall: number;
-  rainDays: number;
-  snowDays: number;
+  rainfall: number | null;
+  rainDays: number | null;
+  snowDays: number | null;
 };
 
 export default class MonthData {
   private idema: string;
-  private tempMin: number;
-  private tempMax: number;
-  private tempAvg: number;
+  private tempMin: number | null;
+  private tempMax: number | null;
+  private tempAvg: number | null;
   private date: Date;
   private isYearStatistics: boolean;
-  private rainfall: number;
-  private rainDays: number;
-  private snowDays: number;
+  private rainfall: number | null;
+  private rainDays: number | null;
+  private snowDays: number | null;
 
   constructor(
     idema: string,
-    tempMin: number,
-    tempMax: number,
-    tempAvg: number,
+    tempMin: number | null,
+    tempMax: number | null,
+    tempAvg: number | null,
     date: Date,
     isYearStatistics: boolean,
-    rainfall: number,
-    rainDays: number,
-    snowDays: number,
+    rainfall: number | null,
+    rainDays: number | null,
+    snowDays: number | null,
   ) {
     this.idema = idema;
     this.tempMin = tempMin;
@@ -45,14 +45,14 @@ export default class MonthData {
 
   static createMonthData(
     idema: string,
-    tempMin: number,
-    tempMax: number,
-    tempAvg: number,
+    tempMin: number | null,
+    tempMax: number | null,
+    tempAvg: number | null,
     year: number,
     month: number,
-    rainfall: number,
-    rainDays: number,
-    snowDays: number,
+    rainfall: number | null,
+    rainDays: number | null,
+    snowDays: number | null,
   ): MonthData {
     return new MonthData(
       idema,
@@ -71,15 +71,15 @@ export default class MonthData {
     return this.idema;
   }
 
-  getTempMin(): number {
+  getTempMin(): number | null {
     return this.tempMin;
   }
 
-  getTempMax(): number {
+  getTempMax(): number | null {
     return this.tempMax;
   }
 
-  getTempAvg(): number {
+  getTempAvg(): number | null {
     return this.tempAvg;
   }
 
@@ -91,15 +91,15 @@ export default class MonthData {
     return this.isYearStatistics;
   }
 
-  getRainfall(): number {
+  getRainfall(): number | null {
     return this.rainfall;
   }
 
-  getRainDays(): number {
+  getRainDays(): number | null {
     return this.rainDays;
   }
 
-  getSnowDays(): number {
+  getSnowDays(): number | null {
     return this.snowDays;
   }
 

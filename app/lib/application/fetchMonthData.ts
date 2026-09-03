@@ -18,7 +18,7 @@ export default async function fetchMonthData(
   anioInitStr: string,
   anioFinStr: string,
   idema: string,
-) {
+): Promise<MonthData[]> {
   const monthDataURL = await preFetchMonthData(anioInitStr, anioFinStr, idema);
   const monthDataResponse = await fetch(monthDataURL, {
     method: 'GET',
@@ -27,8 +27,15 @@ export default async function fetchMonthData(
     },
   });
 
+  if (!monthDataResponse.ok) {
+    throw new Error(
+      `Error fetching AEMET month data for ${anioInitStr}-${anioFinStr} (station ${idema}): HTTP ${monthDataResponse.status} ${monthDataResponse.statusText}`,
+    );
+  }
+
   const buffer = await monthDataResponse.arrayBuffer();
-  const monthData = JSON.parse(new TextDecoder('iso-8859-1').decode(buffer));
+  const raw = JSON.parse(new TextDecoder('iso-8859-1').decode(buffer));
+  const monthData = Array.isArray(raw) ? raw : [];
   const data = monthData.map((month: monthDataDTO) =>
     MonthData.createMonthData(
       month.indicativo,
@@ -46,7 +53,17 @@ export default async function fetchMonthData(
   return data;
 }
 
-async function preFetchMonthData(anioInitStr: string, anioFinStr: string, idema: string) {
+type AemetPrefetchResponse = {
+  datos: string;
+  estado: number;
+  descripcion: string;
+};
+
+async function preFetchMonthData(
+  anioInitStr: string,
+  anioFinStr: string,
+  idema: string,
+): Promise<string> {
   const URL = `${process.env.BASE_URL}/api/valores/climatologicos/mensualesanuales/datos/anioini/${anioInitStr}/aniofin/${anioFinStr}/estacion/${idema}`;
   const preResponse = await fetch(URL, {
     method: 'GET',
@@ -56,17 +73,25 @@ async function preFetchMonthData(anioInitStr: string, anioFinStr: string, idema:
   });
 
   if (!preResponse.ok) {
-    throw new Error(`Error fetching month data: ${preResponse.statusText}`);
+    throw new Error(
+      `Error requesting AEMET month data for ${anioInitStr}-${anioFinStr} (station ${idema}): HTTP ${preResponse.status} ${preResponse.statusText}`,
+    );
   }
 
-  const data = await preResponse.json();
-  const monthDataURL = data.datos;
-  return monthDataURL;
+  const data = (await preResponse.json()) as AemetPrefetchResponse;
+
+  if (!data.datos) {
+    throw new Error(
+      `AEMET returned no data URL for ${anioInitStr}-${anioFinStr} (station ${idema}). Estado: ${data.estado}. ${data.descripcion}`,
+    );
+  }
+
+  return data.datos;
 }
 
-function parseNumber(value: string): number {
+function parseNumber(value: string): number | null {
   if (!value) {
-    return 0;
+    return null;
   }
   const decimalValue = new Decimal(value);
   return decimalValue.toNumber();

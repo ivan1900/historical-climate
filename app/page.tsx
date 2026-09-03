@@ -4,6 +4,7 @@ import {
   Autocomplete,
   Button,
   Container,
+  Loader,
   Stack,
   Text,
   Title,
@@ -81,57 +82,69 @@ export default function Home() {
   };
 
   return (
-    <Container size='sm' py='xl' className='flex-1'>
-      <Stack gap='lg' maw={480} mx='auto' w='100%'>
-        <Stack gap={4}>
-          <Title order={1}>Clima histórico</Title>
-          <Text c='dimmed'>
-            Consulta los datos climáticos históricos de cualquier población
-            española
-          </Text>
-        </Stack>
-
-        <form onSubmit={handleSubmit}>
-          <Stack gap='lg'>
-            <MonthPickerInput
-              type='range'
-              label='Periodo'
-              placeholder='Selecciona el rango de meses'
-              valueFormat='MM/YYYY'
-              clearable
-              maxDate={maxDate}
-              value={period}
-              onChange={setPeriod}
-            />
-
-            {monthKeys[0] && monthKeys[1] && (
-              <Text size='sm' c='dimmed'>
-                Rango seleccionado: {monthKeys[0]} – {monthKeys[1]}
-              </Text>
-            )}
-
-            <Autocomplete
-              label='Población'
-              placeholder='Busca una población (ej. Madrid)'
-              data={stations}
-              limit={10}
-              value={stationQuery}
-              onChange={setStationQuery}
-              onOptionSubmit={setSelectedStationIdema}
-              filter={({ options }) => options}
-            />
-
-            <Button
-              type='submit'
-              fullWidth
-              size='md'
-              loading={isPending}
-              disabled={!canSearch}>
-              Buscar
-            </Button>
+    <>
+      {isPending && (
+        <div
+          aria-live='polite'
+          className='fixed inset-0 z-50 flex items-center justify-center bg-white/70 dark:bg-black/70'>
+          <Stack gap='md' align='center'>
+            <Loader size='xl' />
+            <Text size='lg'>Obteniendo datos históricos de AEMET…</Text>
           </Stack>
-        </form>
-      </Stack>
-    </Container>
+        </div>
+      )}
+      <Container size='sm' py='xl' className='flex-1'>
+        <Stack gap='lg' maw={480} mx='auto' w='100%'>
+          <Stack gap={4}>
+            <Title order={1}>Clima histórico</Title>
+            <Text c='dimmed'>
+              Consulta los datos climáticos históricos de cualquier población
+              española
+            </Text>
+          </Stack>
+
+          <form onSubmit={handleSubmit}>
+            <Stack gap='lg'>
+              <MonthPickerInput
+                type='range'
+                label='Periodo'
+                placeholder='Selecciona el rango de meses'
+                valueFormat='MM/YYYY'
+                clearable
+                maxDate={maxDate}
+                value={period}
+                onChange={setPeriod}
+              />
+
+              {monthKeys[0] && monthKeys[1] && (
+                <Text size='sm' c='dimmed'>
+                  Rango seleccionado: {monthKeys[0]} – {monthKeys[1]}
+                </Text>
+              )}
+
+              <Autocomplete
+                label='Población'
+                placeholder='Busca una población (ej. Madrid)'
+                data={stations}
+                limit={10}
+                value={stationQuery}
+                onChange={setStationQuery}
+                onOptionSubmit={setSelectedStationIdema}
+                filter={({ options }) => options}
+              />
+
+              <Button
+                type='submit'
+                fullWidth
+                size='md'
+                loading={isPending}
+                disabled={!canSearch}>
+                Buscar
+              </Button>
+            </Stack>
+          </form>
+        </Stack>
+      </Container>
+    </>
   );
 }
