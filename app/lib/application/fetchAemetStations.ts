@@ -1,7 +1,7 @@
 import Station from '../domain/station';
 import updateStations from '../infrastructure/updateStations';
 
-type StationData = {
+type StationDataDTO = {
   indicativo: string;
   altitud: string;
   nombre: string;
@@ -20,7 +20,7 @@ export default async function fetchAemetStations() {
 
   const buffer = await stationsResponse.arrayBuffer();
   const stationsData = JSON.parse(new TextDecoder('iso-8859-1').decode(buffer));
-  const stations = stationsData.map((station: StationData) =>
+  const stations = stationsData.map((station: StationDataDTO) =>
     Station.createStation(
       station.indicativo,
       station.altitud,

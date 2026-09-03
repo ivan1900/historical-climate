@@ -11,6 +11,7 @@
     "format": "oxfmt",
     "format:check": "oxfmt --check",
     "prisma:pull": "prisma db pull",
+    "prisma:push": "prisma db push",
     "prisma:generate": "prisma generate"
   },
   "dependencies": {
@@ -21,6 +22,7 @@
     "@prisma/adapter-pg": "^7.9.1",
     "@prisma/client": "^7.9.1",
     "dayjs": "^1.11.21",
+    "decimal.js": "^10.6.0",
     "dotenv": "^17.4.2",
     "next": "16.3.1",
     "pg": "^8.23.0",
