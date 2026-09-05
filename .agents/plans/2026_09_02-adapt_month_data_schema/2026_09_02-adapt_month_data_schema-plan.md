@@ -1,24 +1,24 @@
 ---
-name: "adapt_month_data_schema"
-description: "Adapt the MonthData domain model, the AEMET DTO parsing and the Prisma persistence/read layers to the new data_monthly schema that stores a single date column plus an is_year_statistics flag."
-created_at: "2026-09-02T00:00:00Z"
+name: 'adapt_month_data_schema'
+description: 'Adapt the MonthData domain model, the AEMET DTO parsing and the Prisma persistence/read layers to the new data_monthly schema that stores a single date column plus an is_year_statistics flag.'
+created_at: '2026-09-02T00:00:00Z'
 
 created_by:
-  tool: "Copilot"
+  tool: 'Copilot'
   model:
-    name: "GitHub Copilot"
-    version: "DeepSeek V4 Flash"
-    reasoning_effort: "medium"
+    name: 'GitHub Copilot'
+    version: 'DeepSeek V4 Flash'
+    reasoning_effort: 'medium'
 
 implemented_by:
-  tool: "Copilot"
+  tool: 'Copilot'
   model:
-    name: "GitHub Copilot"
-    version: "DeepSeek V4 Flash"
-    reasoning_effort: "medium"
+    name: 'GitHub Copilot'
+    version: 'DeepSeek V4 Flash'
+    reasoning_effort: 'medium'
 
-last_implementation_at: "2026-09-02T00:00:00Z"
-has_completed_all_phases: "true"
+last_implementation_at: '2026-09-02T00:00:00Z'
+has_completed_all_phases: 'true'
 ---
 
 # 🧠 Plan: Adapt domain and DTOs to the new data_monthly schema

@@ -1,24 +1,24 @@
 ---
-name: "buscar-button-loading-state"
-description: "Wire the Buscar button to searchByDate with a Mantine loading state that locks the button while data loads, and disable it while inputs are incomplete"
-created_at: "2026-09-02T15:34:18Z"
+name: 'buscar-button-loading-state'
+description: 'Wire the Buscar button to searchByDate with a Mantine loading state that locks the button while data loads, and disable it while inputs are incomplete'
+created_at: '2026-09-02T15:34:18Z'
 
 created_by:
-  tool: "Copilot"
+  tool: 'Copilot'
   model:
-    name: "GitHub Copilot"
-    version: "Current (VS Code Chat agent)"
-    reasoning_effort: "medium"
+    name: 'GitHub Copilot'
+    version: 'Current (VS Code Chat agent)'
+    reasoning_effort: 'medium'
 
 implemented_by:
-  tool: "Copilot"
+  tool: 'Copilot'
   model:
-    name: "GitHub Copilot"
-    version: "Current (VS Code Chat agent)"
-    reasoning_effort: "medium"
+    name: 'GitHub Copilot'
+    version: 'Current (VS Code Chat agent)'
+    reasoning_effort: 'medium'
 
-last_implementation_at: "2026-09-02T15:52:10Z"
-has_completed_all_phases: "true"
+last_implementation_at: '2026-09-02T15:52:10Z'
+has_completed_all_phases: 'true'
 ---
 
 # Plan: Loading state for the Buscar button
