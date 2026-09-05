@@ -17,19 +17,24 @@ type ChartPoint = {
   'Temperatura máxima': number | null;
 };
 
-export function TemperatureChart({ data, hasSearched = false }: TemperatureChartProps) {
+export function TemperatureChart({
+  data,
+  hasSearched = false,
+}: TemperatureChartProps) {
   const chartData = data
     .filter((item) => !item.isYearStatistics)
     .sort((a, b) => dayjs(a.date).valueOf() - dayjs(b.date).valueOf())
-    .map((item): ChartPoint => ({
-      month: dayjs(item.date).format('MM/YYYY'),
-      'Temperatura media': item.tempAvg,
-      'Temperatura máxima': item.tempMax,
-    }));
+    .map(
+      (item): ChartPoint => ({
+        month: dayjs(item.date).format('MM/YYYY'),
+        'Temperatura media': item.tempAvg,
+        'Temperatura máxima': item.tempMax,
+      }),
+    );
 
   if (hasSearched && chartData.length === 0) {
     return (
-      <Text mt="xl" ta="center" c="dimmed">
+      <Text mt='xl' ta='center' c='dimmed'>
         No hay datos de temperaturas para el período seleccionado
       </Text>
     );
@@ -40,18 +45,18 @@ export function TemperatureChart({ data, hasSearched = false }: TemperatureChart
   }
 
   return (
-    <Box w={{ base: '90%', md: '80%' }} mx="auto">
+    <Box w={{ base: '90%', md: '80%' }} mx='auto'>
       <LineChart
         h={{ base: 300, md: 480 }}
-        mt="xl"
+        mt='xl'
         data={chartData}
-        dataKey="month"
+        dataKey='month'
         withLegend
         legendProps={{ verticalAlign: 'bottom' }}
-        unit="°C"
-        xAxisLabel="Mes"
-        yAxisLabel="Temperatura (°C)"
-        curveType="linear"
+        unit='°C'
+        xAxisLabel='Mes'
+        yAxisLabel='Temperatura (°C)'
+        curveType='linear'
         strokeWidth={2}
         connectNulls={false}
         series={[
