@@ -59,6 +59,7 @@ export function TemperatureChart({
         curveType='linear'
         strokeWidth={2}
         connectNulls={false}
+        withPointLabels
         series={[
           { name: 'Temperatura media', color: 'blue.6' },
           { name: 'Temperatura máxima', color: 'red.6' },
