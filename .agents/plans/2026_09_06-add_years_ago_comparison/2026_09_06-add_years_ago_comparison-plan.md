@@ -1,24 +1,24 @@
 ---
-name: "add_years_ago_comparison"
+name: 'add_years_ago_comparison'
 description: "Add a 'years ago' comparison to the climate search: fetch the same period shifted back N years and overlay it on the temperature chart with soft colors."
-created_at: "2026-09-06T00:00:00Z"
+created_at: '2026-09-06T00:00:00Z'
 
 created_by:
-  tool: "Copilot"
+  tool: 'Copilot'
   model:
-    name: "GLM"
-    version: "5.3"
-    reasoning_effort: "high"
+    name: 'GLM'
+    version: '5.3'
+    reasoning_effort: 'high'
 
 implemented_by:
-  tool: "Copilot"
+  tool: 'Copilot'
   model:
-    name: "GLM"
-    version: "5.3"
-    reasoning_effort: "high"
+    name: 'GLM'
+    version: '5.3'
+    reasoning_effort: 'high'
 
-last_implementation_at: "2026-09-06T11:30:00Z"
-has_completed_all_phases: "false"
+last_implementation_at: '2026-09-06T11:30:00Z'
+has_completed_all_phases: 'false'
 ---
 
 # Add "years ago" comparison to the climate search
@@ -67,7 +67,7 @@ Create a dedicated server action that fetches both the current and the shifted p
     to: Date,
     idema: string,
     yearsAgo: number,
-  ): Promise<{ current: MonthDataDTO[]; comparison: MonthDataDTO[] | null }>
+  ): Promise<{ current: MonthDataDTO[]; comparison: MonthDataDTO[] | null }>;
   ```
 - [ ] Internally shift `from`/`to` back `yearsAgo` years using dayjs (already a project dependency) and reuse the existing pipeline (`getDataByDate` DB-first + `fetchMonthData` AEMET gap-filling) for the comparison range
 - [ ] Return `comparison: null` when `yearsAgo` is `0`, empty or the shifted range is invalid

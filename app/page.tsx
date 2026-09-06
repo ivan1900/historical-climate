@@ -5,6 +5,7 @@ import {
   Box,
   Button,
   Loader,
+  NumberInput,
   Stack,
   Text,
   Title,
@@ -42,6 +43,7 @@ export default function Home() {
 
   const [searchResult, setSearchResult] = useState<MonthDataDTO[]>([]);
   const [hasSearched, setHasSearched] = useState(false);
+  const [yearsAgo, setYearsAgo] = useState<number | string>('');
   const [isPending, startTransition] = useTransition();
 
   const canSearch = Boolean(period[0] && period[1] && selectedStationIdema);
@@ -124,6 +126,17 @@ export default function Home() {
                   Rango seleccionado: {monthKeys[0]} – {monthKeys[1]}
                 </Text>
               )}
+
+              <NumberInput
+                label='Comparar con años atrás'
+                placeholder='10'
+                description='Compara el periodo seleccionado con el mismo periodo N años antes'
+                min={0}
+                allowDecimal={false}
+                hideControls
+                value={yearsAgo}
+                onChange={setYearsAgo}
+              />
 
               <Autocomplete
                 label='Estación'
