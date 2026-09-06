@@ -14,7 +14,7 @@ type TemperatureChartProps = {
 type ChartPoint = {
   month: string;
   'Temperatura media': number | null;
-  'Temperatura máxima': number | null;
+  'Temperatura media máxima': number | null;
 };
 
 export function TemperatureChart({
@@ -28,7 +28,7 @@ export function TemperatureChart({
       (item): ChartPoint => ({
         month: dayjs(item.date).format('MM/YYYY'),
         'Temperatura media': item.tempAvg,
-        'Temperatura máxima': item.tempMax,
+        'Temperatura media máxima': item.tempMax,
       }),
     );
 
@@ -62,7 +62,7 @@ export function TemperatureChart({
         withPointLabels
         series={[
           { name: 'Temperatura media', color: 'blue.6' },
-          { name: 'Temperatura máxima', color: 'red.6' },
+          { name: 'Temperatura media máxima', color: 'red.6' },
         ]}
       />
     </Box>

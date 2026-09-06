@@ -126,8 +126,8 @@ export default function Home() {
               )}
 
               <Autocomplete
-                label='Población'
-                placeholder='Busca una población (ej. Madrid)'
+                label='Estación'
+                placeholder='Busca una estación (ej. Madrid)'
                 data={stations}
                 limit={10}
                 value={stationQuery}
