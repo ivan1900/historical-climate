@@ -17,7 +17,7 @@ implemented_by:
     version: '5.3'
     reasoning_effort: 'high'
 
-last_implementation_at: '2026-09-06T11:30:00Z'
+last_implementation_at: '2026-09-06T12:15:00Z'
 has_completed_all_phases: 'false'
 ---
 
@@ -59,8 +59,8 @@ Add the new "years ago" input to the search form and wire its state, without any
 
 Create a dedicated server action that fetches both the current and the shifted period in a single request, and wire it into the form submission.
 
-- [ ] Create [`app/lib/application/searchByDateWithComparison.ts`](../../app/lib/application/searchByDateWithComparison.ts) with the `'use server'` directive
-- [ ] Public contract:
+- [x] Create [`app/lib/application/searchByDateWithComparison.ts`](../../app/lib/application/searchByDateWithComparison.ts) with the `'use server'` directive
+- [x] Public contract:
   ```ts
   export default async function searchByDateWithComparison(
     from: Date,
@@ -69,15 +69,15 @@ Create a dedicated server action that fetches both the current and the shifted p
     yearsAgo: number,
   ): Promise<{ current: MonthDataDTO[]; comparison: MonthDataDTO[] | null }>;
   ```
-- [ ] Internally shift `from`/`to` back `yearsAgo` years using dayjs (already a project dependency) and reuse the existing pipeline (`getDataByDate` DB-first + `fetchMonthData` AEMET gap-filling) for the comparison range
-- [ ] Return `comparison: null` when `yearsAgo` is `0`, empty or the shifted range is invalid
-- [ ] Update `handleSubmit` in [`app/page.tsx`](../../app/page.tsx):
+- [x] Internally shift `from`/`to` back `yearsAgo` years using dayjs (already a project dependency) and reuse the existing pipeline (`getDataByDate` DB-first + `fetchMonthData` AEMET gap-filling) for the comparison range
+- [x] Return `comparison: null` when `yearsAgo` is `0`, empty or the shifted range is invalid
+- [x] Update `handleSubmit` in [`app/page.tsx`](../../app/page.tsx):
   - When `yearsAgo` is set and positive, call `searchByDateWithComparison` instead of `searchByDate`
   - Store the result in new state: `searchResult` (current data) + `comparisonResult` (`MonthDataDTO[] | null`)
   - Both ranges are fetched inside the single server action (server-side), complying with Next.js 16 sequential server-action dispatch
-- [ ] The chart still renders only the main data in this phase
-- [ ] Verify the changes in terms of typechecking, linting and tests using the project's verification commands (`pnpm tsc --noEmit`, `pnpm lint`, `pnpm format:check`). Fix issues if any.
-- [ ] STOP. Present the changes to the user for review and suggest commit messages. Do NOT proceed to the next phase until the user explicitly asks.
+- [x] The chart still renders only the main data in this phase
+- [x] Verify the changes in terms of typechecking, linting and tests using the project's verification commands (`pnpm tsc --noEmit`, `pnpm lint`, `pnpm format:check`). Fix issues if any.
+- [x] STOP. Present the changes to the user for review and suggest commit messages. Do NOT proceed to the next phase until the user explicitly asks.
 
 ### Phase 3: Chart rendering with soft colors
 
@@ -103,6 +103,6 @@ Overlay the comparison data on the existing chart as extra muted series.
 
 ## ⏭️ Next step
 
-Complete Phase 2 (create the `searchByDateWithComparison` server action that fetches both the current and shifted ranges, and wire it into the form submission).
+Complete Phase 3 (overlay the comparison data on the chart as extra soft-colored series and pass `comparisonData` from the form).
 
-Bugs squashed thanks to [Codely](https://codely.com) AI tooling. 🐛 < 🐢 💨
+The flame of progress burns brighter thanks to [Codely](https://codely.com) AI tooling. 🔥 🐢 💨

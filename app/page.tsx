@@ -17,6 +17,7 @@ import { FormEvent, useEffect, useRef, useState, useTransition } from 'react';
 
 import { TemperatureChart } from './components/TemperatureChart';
 import searchByDate from './lib/application/searchByDate';
+import searchByDateWithComparison from './lib/application/searchByDateWithComparison';
 import { searchStations } from './lib/application/searchStations';
 import type { MonthDataDTO } from './lib/domain/monthData';
 
@@ -42,6 +43,9 @@ export default function Home() {
   const [debouncedStationQuery] = useDebouncedValue(stationQuery, 300);
 
   const [searchResult, setSearchResult] = useState<MonthDataDTO[]>([]);
+  const [comparisonResult, setComparisonResult] = useState<
+    MonthDataDTO[] | null
+  >(null);
   const [hasSearched, setHasSearched] = useState(false);
   const [yearsAgo, setYearsAgo] = useState<number | string>('');
   const [isPending, startTransition] = useTransition();
@@ -76,12 +80,24 @@ export default function Home() {
     }
 
     startTransition(async () => {
-      const data = await searchByDate(
-        dayjs(from, 'YYYY-MM').toDate(),
-        dayjs(to, 'YYYY-MM').toDate(),
-        selectedStationIdema,
-      );
-      setSearchResult(data);
+      const fromDate = dayjs(from, 'YYYY-MM').toDate();
+      const toDate = dayjs(to, 'YYYY-MM').toDate();
+      const yearsAgoNumber = Number(yearsAgo);
+
+      if (yearsAgoNumber > 0) {
+        const result = await searchByDateWithComparison(
+          fromDate,
+          toDate,
+          selectedStationIdema,
+          yearsAgoNumber,
+        );
+        setSearchResult(result.current);
+        setComparisonResult(result.comparison);
+      } else {
+        const data = await searchByDate(fromDate, toDate, selectedStationIdema);
+        setSearchResult(data);
+        setComparisonResult(null);
+      }
       setHasSearched(true);
     });
   };
