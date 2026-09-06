@@ -51,6 +51,7 @@ export default function Home() {
   const [isPending, startTransition] = useTransition();
 
   const canSearch = Boolean(period[0] && period[1] && selectedStationIdema);
+  const yearsAgoNumber = Number(yearsAgo);
 
   const requestRef = useRef(0);
 
@@ -82,7 +83,6 @@ export default function Home() {
     startTransition(async () => {
       const fromDate = dayjs(from, 'YYYY-MM').toDate();
       const toDate = dayjs(to, 'YYYY-MM').toDate();
-      const yearsAgoNumber = Number(yearsAgo);
 
       if (yearsAgoNumber > 0) {
         const result = await searchByDateWithComparison(
@@ -177,7 +177,12 @@ export default function Home() {
           </form>
         </Stack>
 
-        <TemperatureChart data={searchResult} hasSearched={hasSearched} />
+        <TemperatureChart
+          data={searchResult}
+          comparisonData={comparisonResult}
+          comparisonLabel={`hace ${yearsAgoNumber} años`}
+          hasSearched={hasSearched}
+        />
       </Box>
     </>
   );

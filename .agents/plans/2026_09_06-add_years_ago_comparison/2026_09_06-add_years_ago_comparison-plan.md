@@ -17,8 +17,8 @@ implemented_by:
     version: '5.3'
     reasoning_effort: 'high'
 
-last_implementation_at: '2026-09-06T12:15:00Z'
-has_completed_all_phases: 'false'
+last_implementation_at: '2026-09-06T13:00:00Z'
+has_completed_all_phases: 'true'
 ---
 
 # Add "years ago" comparison to the climate search
@@ -83,7 +83,7 @@ Create a dedicated server action that fetches both the current and the shifted p
 
 Overlay the comparison data on the existing chart as extra muted series.
 
-- [ ] Extend the `TemperatureChart` props in [`app/components/TemperatureChart.tsx`](../../app/components/TemperatureChart.tsx):
+- [x] Extend the `TemperatureChart` props in [`app/components/TemperatureChart.tsx`](../../app/components/TemperatureChart.tsx):
   ```ts
   type TemperatureChartProps = {
     data: MonthDataDTO[];
@@ -92,17 +92,17 @@ Overlay the comparison data on the existing chart as extra muted series.
     hasSearched?: boolean;
   };
   ```
-- [ ] Merge the comparison months into the chart points, joining by month index/`MM` so both series align on the shared `month` (`MM/YYYY`) x-axis keys of the current period
-- [ ] Add 2 soft-colored series to the `series` prop:
+- [x] Merge the comparison months into the chart points, joining by month index/`MM` so both series align on the shared `month` (`MM/YYYY`) x-axis keys of the current period
+- [x] Add 2 soft-colored series to the `series` prop:
   - `'Temperatura media (comparación)'` with color `blue.2`
   - `'Temperatura media máxima (comparación)'` with color `red.2`
-- [ ] Show the comparison series (and their legend entries) only when `comparisonData` is present and non-empty
-- [ ] Filter out `isYearStatistics` rows from the comparison data, as done for the main data
-- [ ] Verify the changes in terms of typechecking, linting and tests using the project's verification commands (`pnpm tsc --noEmit`, `pnpm lint`, `pnpm format:check`). Fix issues if any.
-- [ ] STOP. Present the changes to the user for review and suggest commit messages. Do NOT proceed to the next phase until the user explicitly asks.
+- [x] Show the comparison series (and their legend entries) only when `comparisonData` is present and non-empty
+- [x] Filter out `isYearStatistics` rows from the comparison data, as done for the main data
+- [x] Verify the changes in terms of typechecking, linting and tests using the project's verification commands (`pnpm tsc --noEmit`, `pnpm lint`, `pnpm format:check`). Fix issues if any.
+- [x] STOP. Present the changes to the user for review and suggest commit messages. Do NOT proceed to the next phase until the user explicitly asks.
 
 ## ⏭️ Next step
 
-Complete Phase 3 (overlay the comparison data on the chart as extra soft-colored series and pass `comparisonData` from the form).
+All three phases are complete: the "Comparar con años atrás" field, the `searchByDateWithComparison` server action, and the soft-colored comparison series on the chart are done and verified end-to-end.
 
-The flame of progress burns brighter thanks to [Codely](https://codely.com) AI tooling. 🔥 🐢 💨
+The journey of a thousand data points ends in a single glance, thanks to [Codely](https://codely.com) AI tooling. 🌅 🐢 💨
