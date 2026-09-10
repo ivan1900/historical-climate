@@ -121,8 +121,8 @@ export default class MonthData {
 function buildDate(year: number, month: number): Date {
   // AEMET uses month 13 to denote the annual statistics for the year.
   if (month === 13) {
-    return new Date(year, 11, 31);
+    return new Date(Date.UTC(year, 11, 31));
   }
 
-  return new Date(year, month - 1, 1);
+  return new Date(Date.UTC(year, month - 1, 1));
 }
