@@ -16,8 +16,13 @@ export default async function searchByDate(
   const start = dayjs(from);
   const end = dayjs(to);
 
-  // 1. Try the database first.
-  let monthData = await getDataByDate(from, to, idema);
+  // 1. Try the database first. Stored dates are UTC midnights of the first of
+  //    month, so query with UTC month boundaries instead of the client's
+  //    local-midnight instants (which fall on the previous day in TZs ahead
+  //    of UTC and drop the last month of the range).
+  const fromUtc = new Date(Date.UTC(start.year(), start.month(), 1));
+  const toUtc = new Date(Date.UTC(end.year(), end.month(), 1));
+  let monthData = await getDataByDate(fromUtc, toUtc, idema);
   const emptyYears = new Set<number>();
 
   // 2. Fetch from AEMET only the years with missing months, chunked by at
@@ -54,8 +59,21 @@ export default async function searchByDate(
     monthData = monthData.concat(fetched);
   }
 
-  // 3. Return only the months within the requested range.
-  return monthData
+  // 3. AEMET fetches whole years, which may overlap months already read from
+  //    the DB; merge by month so each month appears once. AEMET rows overwrite
+  //    DB rows (they were just upserted, so they are identical or fresher).
+  //    Annual statistics rows (AEMET month 13, stored Dec 31) are skipped:
+  //    they share the December month key and are dropped by the chart anyway.
+  const byMonth = new Map<string, MonthData>();
+  for (const data of monthData) {
+    if (data.getIsYearStatistics()) {
+      continue;
+    }
+    byMonth.set(dayjs(data.getDate()).format('YYYY-MM'), data);
+  }
+
+  // 4. Return only the months within the requested range.
+  return [...byMonth.values()]
     .filter(
       (data) =>
         dayjs(data.getDate()).isSame(start, 'month') ||
@@ -73,7 +91,7 @@ function getMissingYears(start: Dayjs, end: Dayjs, monthData: MonthData[]): numb
   for (let year = start.year(); year <= end.year(); year++) {
     const missing = [...Array(12).keys()]
       .map((month) => `${year}-${String(month + 1).padStart(2, '0')}`)
-      .filter((monthKey) => !monthKeyInRange(monthKey, start, end) || !monthKeysInDb.has(monthKey));
+      .filter((monthKey) => monthKeyInRange(monthKey, start, end) && !monthKeysInDb.has(monthKey));
 
     if (missing.length > 0) {
       missingYears.push(year);
