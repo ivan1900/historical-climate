@@ -4,7 +4,7 @@ import { LineChart } from '@mantine/charts';
 import { Box, Text } from '@mantine/core';
 import dayjs from 'dayjs';
 
-import type { MonthDataDTO } from '../lib/domain/monthData';
+import type { MonthDataDTO } from '../server/domain/monthData';
 
 type TemperatureChartProps = {
   data: MonthDataDTO[];

@@ -16,10 +16,10 @@ import dayjs from 'dayjs';
 import { FormEvent, useEffect, useRef, useState, useTransition } from 'react';
 
 import { TemperatureChart } from './components/TemperatureChart';
-import searchByDate from './lib/application/searchByDate';
-import searchByDateWithComparison from './lib/application/searchByDateWithComparison';
-import { searchStations } from './lib/application/searchStations';
-import type { MonthDataDTO } from './lib/domain/monthData';
+import searchByDate from './server/application/searchByDate';
+import searchByDateWithComparison from './server/application/searchByDateWithComparison';
+import { searchStations } from './server/application/searchStations';
+import type { MonthDataDTO } from './server/domain/monthData';
 
 type StationSuggestion = {
   value: string;
