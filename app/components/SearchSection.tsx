@@ -17,14 +17,12 @@ import { FormEvent, useEffect, useRef, useState, useTransition } from 'react';
 
 import searchByDate from '../server/application/searchByDate';
 import searchByDateWithComparison from '../server/application/searchByDateWithComparison';
-import { searchStations } from '../server/application/searchStations';
+import {
+  searchStations,
+  type StationSuggestion,
+} from '../server/application/searchStations';
 import type { MonthDataDTO } from '../server/domain/monthData';
 import { TemperatureChart } from './TemperatureChart';
-
-type StationSuggestion = {
-  value: string;
-  label: string;
-};
 
 export function SearchSection() {
   const [period, setPeriod] = useState<[string | null, string | null]>([
@@ -122,76 +120,74 @@ export function SearchSection() {
         px={{ base: 'md', md: 'xl' }}
         py='xl'
         className='flex-1'>
-        <Box maw={1100} mx='auto'>
-          <Stack gap='lg' w={{ base: '100%', md: '50%' }} mx='auto'>
-            <Stack gap={4}>
-              <Title order={2}>Consulta el clima histórico</Title>
-              <Text c='dimmed'>
-                Elige un periodo y una estación para ver la evolución de las
-                temperaturas
-              </Text>
-            </Stack>
-
-            <form onSubmit={handleSubmit}>
-              <Stack gap='lg'>
-                <MonthPickerInput
-                  type='range'
-                  label='Periodo'
-                  placeholder='Selecciona el rango de meses'
-                  valueFormat='MM/YYYY'
-                  clearable
-                  maxDate={maxDate}
-                  value={period}
-                  onChange={setPeriod}
-                />
-
-                {monthKeys[0] && monthKeys[1] && (
-                  <Text size='sm' c='dimmed'>
-                    Rango seleccionado: {monthKeys[0]} – {monthKeys[1]}
-                  </Text>
-                )}
-
-                <NumberInput
-                  label='Comparar con años atrás'
-                  placeholder='10'
-                  description='Compara el periodo seleccionado con el mismo periodo N años antes'
-                  min={0}
-                  allowDecimal={false}
-                  hideControls
-                  value={yearsAgo}
-                  onChange={setYearsAgo}
-                />
-
-                <Autocomplete
-                  label='Estación'
-                  placeholder='Busca una estación (ej. Madrid)'
-                  data={stations}
-                  limit={10}
-                  value={stationQuery}
-                  onChange={setStationQuery}
-                  onOptionSubmit={setSelectedStationIdema}
-                  filter={({ options }) => options}
-                />
-
-                <Button
-                  type='submit'
-                  fullWidth
-                  size='md'
-                  loading={isPending}
-                  disabled={!canSearch}>
-                  Buscar
-                </Button>
-              </Stack>
-            </form>
+        <Stack gap='lg' w={{ base: '90%', md: '30%' }} mx='auto'>
+          <Stack gap={4}>
+            <Title order={1}>Clima histórico</Title>
+            <Text c='dimmed'>
+              Consulta los datos climáticos históricos de cualquier población
+              española
+            </Text>
           </Stack>
 
-          <TemperatureChart
-            data={searchResult}
-            comparisonData={comparisonResult}
-            comparisonLabel={`hace ${yearsAgoNumber} años`}
-            hasSearched={hasSearched}
-          />
-        </Box>
+          <form onSubmit={handleSubmit}>
+            <Stack gap='lg'>
+              <MonthPickerInput
+                type='range'
+                label='Periodo'
+                placeholder='Selecciona el rango de meses'
+                valueFormat='MM/YYYY'
+                clearable
+                maxDate={maxDate}
+                value={period}
+                onChange={setPeriod}
+              />
+
+              {monthKeys[0] && monthKeys[1] && (
+                <Text size='sm' c='dimmed'>
+                  Rango seleccionado: {monthKeys[0]} – {monthKeys[1]}
+                </Text>
+              )}
+
+              <NumberInput
+                label='Comparar con años atrás'
+                placeholder='10'
+                description='Compara el periodo seleccionado con el mismo periodo N años antes'
+                min={0}
+                allowDecimal={false}
+                hideControls
+                value={yearsAgo}
+                onChange={setYearsAgo}
+              />
+
+              <Autocomplete
+                label='Estación'
+                placeholder='Busca una estación (ej. Madrid)'
+                data={stations}
+                limit={10}
+                value={stationQuery}
+                onChange={setStationQuery}
+                onOptionSubmit={setSelectedStationIdema}
+                filter={({ options }) => options}
+              />
+
+              <Button
+                type='submit'
+                fullWidth
+                size='md'
+                loading={isPending}
+                disabled={!canSearch}>
+                Buscar
+              </Button>
+            </Stack>
+          </form>
+        </Stack>
+
+        <TemperatureChart
+          data={searchResult}
+          comparisonData={comparisonResult}
+          comparisonLabel={`hace ${yearsAgoNumber} años`}
+          hasSearched={hasSearched}
+        />
       </Box>
     </>
   );
