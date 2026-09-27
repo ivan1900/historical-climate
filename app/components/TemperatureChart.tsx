@@ -78,7 +78,7 @@ export function TemperatureChart({
   // the current period lines.
   const comparisonSeries = hasComparison
     ? [
-        { name: avgComparisonName, color: 'blue.2', strokeDasharray: '6 4' },
+        { name: avgComparisonName, color: 'green.2', strokeDasharray: '6 4' },
         { name: maxComparisonName, color: 'red.2', strokeDasharray: '6 4' },
       ]
     : [];
