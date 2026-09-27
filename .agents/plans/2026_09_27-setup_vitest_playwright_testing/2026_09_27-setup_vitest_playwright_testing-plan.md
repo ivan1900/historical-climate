@@ -17,8 +17,8 @@ implemented_by:
     version: "4.1"
     reasoning_effort: "medium"
 
-last_implementation_at: "2026-09-27T20:07:00Z"
-has_completed_all_phases: "false"
+last_implementation_at: "2026-09-27T20:22:26Z"
+has_completed_all_phases: "true"
 ---
 
 # Setup Vitest + Playwright testing
@@ -100,20 +100,20 @@ To-do:
 Description: install and configure Playwright against the local dev server and cover the main search flow end to end.
 
 To-do:
-- [ ] `pnpm add -D @playwright/test` and `pnpm exec playwright install` (browsers).
-- [ ] Create `playwright.config.ts`: `webServer` running `next dev` on a fixed port with `reuseExistingServer: true`, `baseURL`, tests under `e2e/`.
-- [ ] Add script to `package.json`: `"e2e": "playwright test"`.
-- [ ] Suite `e2e/home.spec.ts`:
-  - [ ] home page loads and shows the search form (Spanish labels visible)
-  - [ ] typing a station name shows autocomplete suggestions (wait for the ~300ms debounce / listbox options)
-  - [ ] month range picker opens and a period can be selected
-  - [ ] happy path: station + period + "Buscar" shows the loading message and then renders the chart with data
-- [ ] Document the prerequisite: a local `.env` with working `DATABASE_URL` and `AEMET_API_KEY` (stations seeded at startup via `instrumentation.ts`); tests run locally against real services (no CI, per scope decision).
-- [ ] Verify the changes in terms of typechecking, linting and tests using the project's verification command (look it up in the AGENTS.md file or the project configuration). Fix issues if any.
-- [ ] STOP. Present the changes to the user for review and suggest commit messages (or pull request titles, when the phases are implemented through pull requests). Do NOT proceed to the next phase until the user explicitly asks.
+- [x] `pnpm add -D @playwright/test` and `pnpm exec playwright install` (browsers). Installed Chromium only (the configured project).
+- [x] Create `playwright.config.ts`: `webServer` running `next dev` on a fixed port (3100) with `reuseExistingServer: true`, `baseURL`, tests under `e2e/`, single `chromium` project, 60s test timeout / 180s webServer timeout.
+- [x] Add script to `package.json`: `"e2e": "playwright test"`. Also excluded `e2e/**` and the Playwright report dirs from Vitest in `vitest.config.mts` (its default `*.spec.ts` glob otherwise picks up the Playwright suite).
+- [x] Suite `e2e/home.spec.ts`:
+  - [x] home page loads and shows the search form (Spanish labels visible)
+  - [x] typing a station name shows autocomplete suggestions (wait for the ~300ms debounce / listbox options)
+  - [x] month range picker opens and a period can be selected (navigates to year 2020 and picks Jan–Jun for determinism)
+  - [x] happy path: station + period + "Buscar" shows the loading message and then renders the chart with data
+- [x] Document the prerequisite: a local `.env` with working `DATABASE_URL` and `AEMET_API_KEY` (stations seeded at startup via `instrumentation.ts`); tests run locally against real services (no CI, per scope decision). Added a "Testing" section to `README.md` with the unit/e2e commands, the one-time `playwright install chromium`, and the `.env` prerequisite.
+- [x] Verify the changes in terms of typechecking, linting and tests using the project's verification command (look it up in the AGENTS.md file or the project configuration). Fix issues if any. (`pnpm exec tsc --noEmit`, `pnpm lint`, `pnpm test` — 20 unit tests, `pnpm e2e` — 4 e2e tests, `pnpm format:check` — new files clean.)
+- [x] STOP. Present the changes to the user for review and suggest commit messages (or pull request titles, when the phases are implemented through pull requests). Do NOT proceed to the next phase until the user explicitly asks.
 
 ## Next step
 
-Complete Phase 3 (E2E tests with Playwright) in a single implementation round.
+All phases are complete. No further implementation rounds are planned; keep the suites green as the app evolves.
 
-Plan created by 🐢 💨 (Turbotuga™, [Codely](https://codely.com)'s mascot). Phase 1 gave the turtle a green shell of tests thanks to [Codely](https://codely.com) AI tooling. 🐢 ✅ Phase 2 mounted the components on the shell and they held. 🧩 🐢 ✅
+Plan created by 🐢 💨 (Turbotuga™, [Codely](https://codely.com)'s mascot). Phase 1 gave the turtle a green shell of tests thanks to [Codely](https://codely.com) AI tooling. 🐢 ✅ Phase 2 mounted the components on the shell and they held. 🧩 🐢 ✅ Phase 3 let the turtle crawl the whole flow end to end and reach the finish line. 🏁 🐢 ✅

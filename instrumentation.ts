@@ -1,7 +1,7 @@
-import fetchAemetStations from './app/server/application/fetchAemetStations';
-
 export async function register() {
   if (process.env.NEXT_RUNTIME === 'nodejs') {
+    const { default: fetchAemetStations } =
+      await import('./app/server/application/fetchAemetStations');
     await fetchAemetStations();
   }
 }

@@ -20,6 +20,24 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Testing
+
+Unit tests (Vitest + React Testing Library, `jsdom`):
+
+```bash
+pnpm test        # single run
+pnpm test:watch  # watch mode
+```
+
+End-to-end tests (Playwright, Chromium):
+
+```bash
+pnpm exec playwright install chromium  # first time only
+pnpm e2e
+```
+
+The e2e suite starts `next dev` on port `3100` (see `playwright.config.ts`) and runs locally against real services. It requires a local `.env` with a working `DATABASE_URL` and `AEMET_API_KEY`: stations are seeded from AEMET at server startup via `instrumentation.ts`, so the station autocomplete only has suggestions once seeding succeeds. There is no CI integration by design.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
