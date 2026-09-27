@@ -56,6 +56,7 @@ describe('TemperatureChart', () => {
           date: new Date(Date.UTC(2020, 0, 1)),
           tempAvg: 5,
           tempMax: 10,
+          tempMin: 0,
         }),
       ],
     });
@@ -68,27 +69,55 @@ describe('TemperatureChart', () => {
         month: '01/2020',
         'Temperatura media': 5,
         'Temperatura media máxima': 10,
+        'Temperatura media mínima': 0,
       },
     ]);
     expect(series.map((item) => item.name)).toEqual([
       'Temperatura media',
       'Temperatura media máxima',
+      'Temperatura media mínima',
     ]);
   });
 
   it('aligns the comparison series by shifted date, leaving gaps as null', () => {
     const averageComparison = 'Temperatura media (hace 10 años)';
     const maxComparison = 'Temperatura media máxima (hace 10 años)';
+    const minComparison = 'Temperatura media mínima (hace 10 años)';
 
     renderChart({
       data: [
-        monthData({ date: new Date(Date.UTC(2020, 0, 1)), tempAvg: 5, tempMax: 10 }),
-        monthData({ date: new Date(Date.UTC(2020, 1, 1)), tempAvg: 6, tempMax: 11 }),
-        monthData({ date: new Date(Date.UTC(2020, 2, 1)), tempAvg: 7, tempMax: 12 }),
+        monthData({
+          date: new Date(Date.UTC(2020, 0, 1)),
+          tempAvg: 5,
+          tempMax: 10,
+          tempMin: -1,
+        }),
+        monthData({
+          date: new Date(Date.UTC(2020, 1, 1)),
+          tempAvg: 6,
+          tempMax: 11,
+          tempMin: 0,
+        }),
+        monthData({
+          date: new Date(Date.UTC(2020, 2, 1)),
+          tempAvg: 7,
+          tempMax: 12,
+          tempMin: 1,
+        }),
       ],
       comparisonData: [
-        monthData({ date: new Date(Date.UTC(2010, 0, 1)), tempAvg: -1, tempMax: 2 }),
-        monthData({ date: new Date(Date.UTC(2010, 1, 1)), tempAvg: 0, tempMax: 3 }),
+        monthData({
+          date: new Date(Date.UTC(2010, 0, 1)),
+          tempAvg: -1,
+          tempMax: 2,
+          tempMin: -5,
+        }),
+        monthData({
+          date: new Date(Date.UTC(2010, 1, 1)),
+          tempAvg: 0,
+          tempMax: 3,
+          tempMin: -4,
+        }),
       ],
       comparisonLabel: 'hace 10 años',
     });
@@ -100,30 +129,38 @@ describe('TemperatureChart', () => {
         month: '01/2020',
         'Temperatura media': 5,
         'Temperatura media máxima': 10,
+        'Temperatura media mínima': -1,
         [averageComparison]: -1,
         [maxComparison]: 2,
+        [minComparison]: -5,
       },
       {
         month: '02/2020',
         'Temperatura media': 6,
         'Temperatura media máxima': 11,
+        'Temperatura media mínima': 0,
         [averageComparison]: 0,
         [maxComparison]: 3,
+        [minComparison]: -4,
       },
       // March has no comparison month N years earlier, so it stays null.
       {
         month: '03/2020',
         'Temperatura media': 7,
         'Temperatura media máxima': 12,
+        'Temperatura media mínima': 1,
         [averageComparison]: null,
         [maxComparison]: null,
+        [minComparison]: null,
       },
     ]);
     expect(series.map((item) => item.name)).toEqual([
       'Temperatura media',
       'Temperatura media máxima',
+      'Temperatura media mínima',
       averageComparison,
       maxComparison,
+      minComparison,
     ]);
   });
 

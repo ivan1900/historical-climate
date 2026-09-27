@@ -33,6 +33,7 @@ export function TemperatureChart({
   // same strings must be used in both the chart points and the series prop.
   const avgComparisonName = `Temperatura media (${comparisonLabel ?? 'comparación'})`;
   const maxComparisonName = `Temperatura media máxima (${comparisonLabel ?? 'comparación'})`;
+  const minComparisonName = `Temperatura media mínima (${comparisonLabel ?? 'comparación'})`;
 
   // The comparison range is the current one shifted back by whole years, so
   // each current month matches the comparison month N years earlier. Joining
@@ -54,6 +55,7 @@ export function TemperatureChart({
         month: dayjs(item.date).format('MM/YYYY'),
         'Temperatura media': item.tempAvg,
         'Temperatura media máxima': item.tempMax,
+        'Temperatura media mínima': item.tempMin,
       };
 
       if (hasComparison) {
@@ -63,6 +65,7 @@ export function TemperatureChart({
         const comparison = comparisonByMonth.get(comparisonKey);
         point[avgComparisonName] = comparison?.tempAvg ?? null;
         point[maxComparisonName] = comparison?.tempMax ?? null;
+        point[minComparisonName] = comparison?.tempMin ?? null;
       }
 
       return point;
@@ -72,6 +75,7 @@ export function TemperatureChart({
   const currentSeries = [
     { name: 'Temperatura media', color: 'green.6' },
     { name: 'Temperatura media máxima', color: 'red.6' },
+    { name: 'Temperatura media mínima', color: 'blue.6' },
   ];
 
   // Comparison lines are drawn dashed and thinner to visually recede behind
@@ -80,6 +84,7 @@ export function TemperatureChart({
     ? [
         { name: avgComparisonName, color: 'green.2', strokeDasharray: '6 4' },
         { name: maxComparisonName, color: 'red.2', strokeDasharray: '6 4' },
+        { name: minComparisonName, color: 'blue.2', strokeDasharray: '6 4' },
       ]
     : [];
 
@@ -116,7 +121,9 @@ export function TemperatureChart({
         // Point labels only on the current series: the comparison lines would
         // add 24 more labels and make the chart unreadable.
         lineProps={(s) =>
-          s.name === avgComparisonName || s.name === maxComparisonName
+          s.name === avgComparisonName ||
+          s.name === maxComparisonName ||
+          s.name === minComparisonName
             ? {
                 label: false,
                 strokeWidth: 1,
