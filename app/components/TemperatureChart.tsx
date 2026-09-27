@@ -70,7 +70,7 @@ export function TemperatureChart({
   );
 
   const currentSeries = [
-    { name: 'Temperatura media', color: 'blue.6' },
+    { name: 'Temperatura media', color: 'green.6' },
     { name: 'Temperatura media máxima', color: 'red.6' },
   ];
 
