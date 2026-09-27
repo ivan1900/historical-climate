@@ -1,15 +1,6 @@
 'use client';
 
-import {
-  Autocomplete,
-  Box,
-  Button,
-  Loader,
-  NumberInput,
-  Stack,
-  Text,
-  Title,
-} from '@mantine/core';
+import { Autocomplete, Box, Button, Loader, NumberInput, Stack, Text, Title } from '@mantine/core';
 import { MonthPickerInput } from '@mantine/dates';
 import { useDebouncedValue } from '@mantine/hooks';
 import dayjs from 'dayjs';
@@ -17,23 +8,17 @@ import { FormEvent, useEffect, useRef, useState, useTransition } from 'react';
 
 import searchByDate from '../server/application/searchByDate';
 import searchByDateWithComparison from '../server/application/searchByDateWithComparison';
-import {
-  searchStations,
-  type StationSuggestion,
-} from '../server/application/searchStations';
+import { searchStations, type StationSuggestion } from '../server/application/searchStations';
 import type { MonthDataDTO } from '../server/domain/monthData';
+import { HowItWorksBanner } from './HowItWorksBanner';
+import { MissingDataInfo } from './MissingDataInfo';
 import { TemperatureChart } from './TemperatureChart';
 
 export function SearchSection() {
-  const [period, setPeriod] = useState<[string | null, string | null]>([
-    null,
-    null,
-  ]);
+  const [period, setPeriod] = useState<[string | null, string | null]>([null, null]);
   const maxDate = dayjs().subtract(1, 'month').format('YYYY-MM');
 
-  const monthKeys = period.map((date) =>
-    date ? dayjs(date).format('YYYY-MM') : null,
-  );
+  const monthKeys = period.map((date) => (date ? dayjs(date).format('YYYY-MM') : null));
 
   const [stationQuery, setStationQuery] = useState('');
   const [selectedStationIdema, setSelectedStationIdema] = useState('');
@@ -41,9 +26,7 @@ export function SearchSection() {
   const [debouncedStationQuery] = useDebouncedValue(stationQuery, 300);
 
   const [searchResult, setSearchResult] = useState<MonthDataDTO[]>([]);
-  const [comparisonResult, setComparisonResult] = useState<
-    MonthDataDTO[] | null
-  >(null);
+  const [comparisonResult, setComparisonResult] = useState<MonthDataDTO[] | null>(null);
   const [hasSearched, setHasSearched] = useState(false);
   const [yearsAgo, setYearsAgo] = useState<number | string>('');
   const [isPending, startTransition] = useTransition();
@@ -104,38 +87,41 @@ export function SearchSection() {
     <>
       {isPending && (
         <div
-          aria-live='polite'
-          className='fixed inset-0 z-50 flex items-center justify-center bg-white/70 dark:bg-black/70'>
-          <Stack gap='md' align='center'>
-            <Loader size='xl' />
-            <Text size='lg'>Obteniendo datos históricos de AEMET…</Text>
+          aria-live="polite"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-white/70 dark:bg-black/70"
+        >
+          <Stack gap="md" align="center">
+            <Loader size="xl" />
+            <Text size="lg">Obteniendo datos históricos de AEMET…</Text>
           </Stack>
         </div>
       )}
 
       <Box
-        component='section'
-        id='buscar'
-        w='100%'
+        component="section"
+        id="buscar"
+        w="100%"
         px={{ base: 'md', md: 'xl' }}
-        py='xl'
-        className='flex-1'>
-        <Stack gap='lg' w={{ base: '90%', md: '30%' }} mx='auto'>
+        py="xl"
+        className="flex-1"
+      >
+        <HowItWorksBanner />
+
+        <Stack gap="lg" w={{ base: '90%', md: '30%' }} mx="auto">
           <Stack gap={4}>
             <Title order={1}>Clima histórico</Title>
-            <Text c='dimmed'>
-              Consulta los datos climáticos históricos de cualquier población
-              española
+            <Text c="dimmed">
+              Consulta los datos climáticos históricos de cualquier población española
             </Text>
           </Stack>
 
           <form onSubmit={handleSubmit}>
-            <Stack gap='lg'>
+            <Stack gap="lg">
               <MonthPickerInput
-                type='range'
-                label='Periodo'
-                placeholder='Selecciona el rango de meses'
-                valueFormat='MM/YYYY'
+                type="range"
+                label="Periodo"
+                placeholder="Selecciona el rango de meses"
+                valueFormat="MM/YYYY"
                 clearable
                 maxDate={maxDate}
                 value={period}
@@ -143,15 +129,15 @@ export function SearchSection() {
               />
 
               {monthKeys[0] && monthKeys[1] && (
-                <Text size='sm' c='dimmed'>
+                <Text size="sm" c="dimmed">
                   Rango seleccionado: {monthKeys[0]} – {monthKeys[1]}
                 </Text>
               )}
 
               <NumberInput
-                label='Comparar con años atrás'
-                placeholder='10'
-                description='Compara el periodo seleccionado con el mismo periodo N años antes'
+                label="Comparar con años atrás"
+                placeholder="10"
+                description="Compara el periodo seleccionado con el mismo periodo N años antes"
                 min={0}
                 allowDecimal={false}
                 hideControls
@@ -160,8 +146,8 @@ export function SearchSection() {
               />
 
               <Autocomplete
-                label='Estación'
-                placeholder='Busca una estación (ej. Madrid)'
+                label="Estación"
+                placeholder="Busca una estación (ej. Madrid)"
                 data={stations}
                 limit={10}
                 value={stationQuery}
@@ -170,12 +156,7 @@ export function SearchSection() {
                 filter={({ options }) => options}
               />
 
-              <Button
-                type='submit'
-                fullWidth
-                size='md'
-                loading={isPending}
-                disabled={!canSearch}>
+              <Button type="submit" fullWidth size="md" loading={isPending} disabled={!canSearch}>
                 Buscar
               </Button>
             </Stack>
@@ -188,6 +169,8 @@ export function SearchSection() {
           comparisonLabel={`hace ${yearsAgoNumber} años`}
           hasSearched={hasSearched}
         />
+
+        <MissingDataInfo />
       </Box>
     </>
   );

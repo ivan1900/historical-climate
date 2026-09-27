@@ -1,23 +1,23 @@
 ---
-name: "add-temp-min-to-graph"
+name: 'add-temp-min-to-graph'
 description: "Add a 'Temperatura media mínima' series (mapped to data_monthly.temp_min / MonthDataDTO.tempMin) to the climate chart, using Mantine's blue.6 color, with a matching comparison series."
-created_at: "2026-09-27T00:00:00Z"
+created_at: '2026-09-27T00:00:00Z'
 
 created_by:
-  tool: "opencode"
+  tool: 'opencode'
   model:
-    name: "MiniMax-M3"
-    version: "MiniMax-M3"
-    reasoning_effort: "medium"
+    name: 'MiniMax-M3'
+    version: 'MiniMax-M3'
+    reasoning_effort: 'medium'
 
 implemented_by:
-  tool: "opencode"
+  tool: 'opencode'
   model:
-    name: "MiniMax-M3"
-    version: "MiniMax-M3"
-    reasoning_effort: "medium"
+    name: 'MiniMax-M3'
+    version: 'MiniMax-M3'
+    reasoning_effort: 'medium'
 
-last_implementation_at: "2026-09-27T23:23:13Z"
+last_implementation_at: '2026-09-27T23:23:13Z'
 has_completed_all_phases: true
 ---
 
@@ -90,7 +90,7 @@ Mirror the `tempMax` pattern for `tempMin`: build the dynamic `minComparisonName
 ### To-do
 
 - [x] In [`TemperatureChart.tsx`](../../app/components/TemperatureChart.tsx):
-  - [x] Add `const minComparisonName = \`Temperatura media mínima (${comparisonLabel ?? 'comparación'})\`;` next to the existing `avgComparisonName` / `maxComparisonName` constants.
+  - [x] Add `const minComparisonName = \`Temperatura media mínima (${comparisonLabel ?? 'comparación'})\`;`next to the existing`avgComparisonName`/`maxComparisonName` constants.
   - [x] Inside `chartData.map`, when `hasComparison`, set `point[minComparisonName] = comparison?.tempMin ?? null;`.
   - [x] In `comparisonSeries`, append `{ name: minComparisonName, color: 'blue.2', strokeDasharray: '6 4' }`.
   - [x] In the `lineProps` callback, extend the comparison-recognition condition to include `s.name === minComparisonName` alongside the existing two checks.

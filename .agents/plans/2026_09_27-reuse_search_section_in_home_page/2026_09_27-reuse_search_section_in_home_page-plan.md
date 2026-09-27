@@ -1,24 +1,24 @@
 ---
-name: "2026_09_27-reuse_search_section_in_home_page"
-description: "Remove the duplication between page.tsx and SearchSection.tsx by making the home page render SearchSection as the single source of truth of the search form"
-created_at: "2026-09-27T20:57:36Z"
+name: '2026_09_27-reuse_search_section_in_home_page'
+description: 'Remove the duplication between page.tsx and SearchSection.tsx by making the home page render SearchSection as the single source of truth of the search form'
+created_at: '2026-09-27T20:57:36Z'
 
 created_by:
-  tool: "OpenCode"
+  tool: 'OpenCode'
   model:
-    name: "DeepSeek V4.1 Flash"
-    version: "4.1"
-    reasoning_effort: "medium"
+    name: 'DeepSeek V4.1 Flash'
+    version: '4.1'
+    reasoning_effort: 'medium'
 
 implemented_by:
-  tool: "OpenCode"
+  tool: 'OpenCode'
   model:
-    name: "DeepSeek V4.1 Flash"
-    version: "4.1"
-    reasoning_effort: "medium"
+    name: 'DeepSeek V4.1 Flash'
+    version: '4.1'
+    reasoning_effort: 'medium'
 
-last_implementation_at: "2026-09-27T21:06:45Z"
-has_completed_all_phases: "true"
+last_implementation_at: '2026-09-27T21:06:45Z'
+has_completed_all_phases: 'true'
 ---
 
 # Reuse SearchSection from the home page
@@ -41,11 +41,11 @@ Remove the duplication between `app/page.tsx` and `app/components/SearchSection.
 
 ### UI components
 
-| Contract | Status |
-| --- | --- |
-| `SearchSection`: named export, no props, `'use client'` | Modified (adopts the copy and layout of `page.tsx`) |
-| `Home`: default export, no props | Modified (becomes a thin wrapper; **loses** `'use client'`) |
-| `TemperatureChart` | Unchanged |
+| Contract                                                | Status                                                      |
+| ------------------------------------------------------- | ----------------------------------------------------------- |
+| `SearchSection`: named export, no props, `'use client'` | Modified (adopts the copy and layout of `page.tsx`)         |
+| `Home`: default export, no props                        | Modified (becomes a thin wrapper; **loses** `'use client'`) |
+| `TemperatureChart`                                      | Unchanged                                                   |
 
 ### User-visible text copies
 
@@ -68,12 +68,12 @@ The orphan copy of `SearchSection` is discarded: `Consulta el clima histórico` 
 
 ### Test suites
 
-| Suite | Change |
-| --- | --- |
-| `app/components/SearchSection.test.tsx` | **New**: the 3 cases moved from `page.test.tsx` |
-| `app/page.test.tsx` | **Reduced** to 1 case: "renders the search section" |
-| `app/components/TemperatureChart.test.tsx`, `app/server/domain/monthData.test.ts`, `app/server/domain/normalize.test.ts`, `app/server/application/getStationsByName.test.ts` | Unchanged |
-| `e2e/home.spec.ts` | Unchanged (must stay green: heading `Clima histórico`) |
+| Suite                                                                                                                                                                        | Change                                                 |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------ |
+| `app/components/SearchSection.test.tsx`                                                                                                                                      | **New**: the 3 cases moved from `page.test.tsx`        |
+| `app/page.test.tsx`                                                                                                                                                          | **Reduced** to 1 case: "renders the search section"    |
+| `app/components/TemperatureChart.test.tsx`, `app/server/domain/monthData.test.ts`, `app/server/domain/normalize.test.ts`, `app/server/application/getStationsByName.test.ts` | Unchanged                                              |
+| `e2e/home.spec.ts`                                                                                                                                                           | Unchanged (must stay green: heading `Clima histórico`) |
 
 No changes to application services, domain events or database schema.
 
@@ -84,6 +84,7 @@ No changes to application services, domain events or database schema.
 Description: align `SearchSection` with the current user-visible UI and turn `page.tsx` into a thin wrapper. Complete vertical slice: the home page works and the existing tests stay green without being touched.
 
 To-do:
+
 - [x] Read the `node_modules/next/dist/docs/` guides about client vs server components, as required by `AGENTS.md`.
 - [x] `app/components/SearchSection.tsx`: change `<Title order={2}>Consulta el clima histórico</Title>` to `<Title order={1}>Clima histórico</Title>`.
 - [x] `app/components/SearchSection.tsx`: change the subtitle to `Consulta los datos climáticos históricos de cualquier población española`.
@@ -105,6 +106,7 @@ To-do:
 Description: the form coverage starts testing `SearchSection` directly and `page.test.tsx` becomes a delegation test. The last duplication is removed.
 
 To-do:
+
 - [x] Create `app/components/SearchSection.test.tsx` with the 3 cases moved from `page.test.tsx`: "renders the search form", "shows the loading overlay while the search action is pending", "renders the chart once the search action resolves with data".
 - [x] Reuse in the new suite the `@mantine/charts` mock (`lineChartSpy` plus `data-testid="line-chart"`) and the `@mantine/dates` mock (the `pick-period` button), plus the `SAMPLE_MONTH_DATA`, `LOADING_TEXT` and `selectPeriodAndStation` helpers.
 - [x] Adjust the `vi.mock` and import paths to the new location: `../server/application/searchStations`, `../server/application/searchByDate`, `../server/application/searchByDateWithComparison`, `../server/domain/monthData`.

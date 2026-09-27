@@ -1,24 +1,24 @@
 ---
-name: "2026_09_27-setup_vitest_playwright_testing"
-description: "Prepare the project for unit testing with Vitest and e2e testing with Playwright"
-created_at: "2026-09-26T22:10:48Z"
+name: '2026_09_27-setup_vitest_playwright_testing'
+description: 'Prepare the project for unit testing with Vitest and e2e testing with Playwright'
+created_at: '2026-09-26T22:10:48Z'
 
 created_by:
-  tool: "opencode"
+  tool: 'opencode'
   model:
-    name: "deepseek-v4.1-flash"
-    version: "4.1"
-    reasoning_effort: "medium"
+    name: 'deepseek-v4.1-flash'
+    version: '4.1'
+    reasoning_effort: 'medium'
 
 implemented_by:
-  tool: "opencode"
+  tool: 'opencode'
   model:
-    name: "deepseek-v4.1-flash"
-    version: "4.1"
-    reasoning_effort: "medium"
+    name: 'deepseek-v4.1-flash'
+    version: '4.1'
+    reasoning_effort: 'medium'
 
-last_implementation_at: "2026-09-27T20:22:26Z"
-has_completed_all_phases: "true"
+last_implementation_at: '2026-09-27T20:22:26Z'
+has_completed_all_phases: 'true'
 ---
 
 # Setup Vitest + Playwright testing
@@ -51,6 +51,7 @@ Prepare the project with unit testing via Vitest and end-to-end testing via Play
 Description: install and configure Vitest following the official Next.js guide, add the `test` scripts, and cover the pure server-side logic with unit tests (first runnable feedback loop).
 
 To-do:
+
 - [x] Read `node_modules/next/dist/docs/01-app/02-guides/testing/vitest.md` (official guide for this Next version).
 - [x] `pnpm add -D vitest @vitejs/plugin-react jsdom @testing-library/react @testing-library/dom vite-tsconfig-paths`
 - [x] Create `vitest.config.mts` (repo root): `tsconfigPaths()` and `react()` plugins, `test.environment: 'jsdom'`. (`.mts` instead of `.ts` to match the official guide and avoid the Vite "ESM syntax loaded as CommonJS" warning.)
@@ -60,7 +61,7 @@ To-do:
   - [x] trims surrounding whitespace
   - [x] lowercases uppercase input
   - [x] leaves already-normalized input unchanged
-  - [x] combined case: "  MaDrId " resolves to "madrid"
+  - [x] combined case: " MaDrId " resolves to "madrid"
 - [x] Suite `monthData.test.ts` (colocated with `app/server/domain/monthData.ts`):
   - [x] `createMonthData` with a regular month builds a UTC date (month - 1) and `isYearStatistics: false`
   - [x] `createMonthData` with month 13 marks annual statistics and date Dec 31 of that year (UTC)
@@ -81,6 +82,7 @@ To-do:
 Description: cover the client components (chart and home page form) with DOM-level unit tests, mocking the `'use server'` actions.
 
 To-do:
+
 - [x] `pnpm add -D @testing-library/user-event @testing-library/jest-dom`
 - [x] Added `vitest.setup.ts` (referenced from `vitest.config.mts`): registers jest-dom matchers, RTL `cleanup`, and jsdom polyfills for `ResizeObserver` / `matchMedia` required by Mantine.
 - [x] Suite `TemperatureChart.test.tsx` (colocated with `app/components/TemperatureChart.tsx`), mocking `@mantine/charts` (the real chart measures a 0x0 container in jsdom) and asserting on the props it receives:
@@ -100,6 +102,7 @@ To-do:
 Description: install and configure Playwright against the local dev server and cover the main search flow end to end.
 
 To-do:
+
 - [x] `pnpm add -D @playwright/test` and `pnpm exec playwright install` (browsers). Installed Chromium only (the configured project).
 - [x] Create `playwright.config.ts`: `webServer` running `next dev` on a fixed port (3100) with `reuseExistingServer: true`, `baseURL`, tests under `e2e/`, single `chromium` project, 60s test timeout / 180s webServer timeout.
 - [x] Add script to `package.json`: `"e2e": "playwright test"`. Also excluded `e2e/**` and the Playwright report dirs from Vitest in `vitest.config.mts` (its default `*.spec.ts` glob otherwise picks up the Playwright suite).

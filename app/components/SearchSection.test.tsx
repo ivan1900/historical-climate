@@ -77,9 +77,7 @@ function renderSearchSection() {
 async function selectPeriodAndStation(user: ReturnType<typeof userEvent.setup>) {
   await user.click(screen.getByText('pick-period'));
 
-  const stationInput = screen.getByPlaceholderText(
-    'Busca una estación (ej. Madrid)',
-  );
+  const stationInput = screen.getByPlaceholderText('Busca una estación (ej. Madrid)');
   await user.type(stationInput, 'Madrid');
   await user.click(await screen.findByText('Madrid'));
 }
@@ -97,13 +95,29 @@ describe('SearchSection', () => {
   it('renders the search form', () => {
     renderSearchSection();
 
-    expect(
-      screen.getByRole('heading', { name: 'Clima histórico' }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Clima histórico' })).toBeInTheDocument();
     expect(screen.getByText('Periodo')).toBeInTheDocument();
     expect(screen.getByText('Estación')).toBeInTheDocument();
     expect(screen.getByText('Comparar con años atrás')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Buscar' })).toBeInTheDocument();
+  });
+
+  it('renders the how-it-works banner and the missing-data info section', () => {
+    renderSearchSection();
+
+    expect(screen.getByText('Cómo funciona')).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        'Selecciona una estación meteorológica, indica el periodo de meses que quieres consultar y, opcionalmente, introduce el número de años para compararlo con el mismo periodo del pasado.',
+      ),
+    ).toBeInTheDocument();
+
+    expect(screen.getByText('¿Por qué no veo datos?')).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        'No todas las estaciones de AEMET disponen de datos históricos completos. Si no aparecen datos para el periodo seleccionado, prueba con otra estación o con un rango de meses diferente.',
+      ),
+    ).toBeInTheDocument();
   });
 
   it('shows the loading overlay while the search action is pending', async () => {
