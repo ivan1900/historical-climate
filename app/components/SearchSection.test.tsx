@@ -105,9 +105,13 @@ describe('SearchSection', () => {
     renderSearchSection();
 
     expect(screen.getByText('Cómo funciona')).toBeInTheDocument();
+    expect(screen.getByText('Selecciona una estación meteorológica')).toBeInTheDocument();
+    expect(
+      screen.getByText('Indica el periodo de meses que quieres consultar'),
+    ).toBeInTheDocument();
     expect(
       screen.getByText(
-        'Selecciona una estación meteorológica, indica el periodo de meses que quieres consultar y, opcionalmente, introduce el número de años para compararlo con el mismo periodo del pasado.',
+        'Introduce el número de años para comparar con el mismo periodo del pasado (opcional)',
       ),
     ).toBeInTheDocument();
 
