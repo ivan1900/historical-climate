@@ -163,7 +163,7 @@ export function SearchSection() {
           hasSearched={hasSearched}
         />
 
-        <MissingDataInfo />
+        <MissingDataInfo noResults={hasSearched && searchResult.length === 0} />
       </Box>
     </>
   );

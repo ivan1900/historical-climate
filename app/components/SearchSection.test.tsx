@@ -101,7 +101,9 @@ describe('SearchSection', () => {
     expect(screen.getByRole('button', { name: 'Buscar' })).toBeInTheDocument();
   });
 
-  it('renders the how-it-works banner and the missing-data info section', () => {
+  it('renders the how-it-works banner and the missing-data info section', async () => {
+    const user = userEvent.setup();
+
     renderSearchSection();
 
     expect(screen.getByText('Cómo funciona')).toBeInTheDocument();
@@ -115,11 +117,15 @@ describe('SearchSection', () => {
       ),
     ).toBeInTheDocument();
 
-    expect(screen.getByText('¿Por qué no veo datos?')).toBeInTheDocument();
+    // Before searching the info is a discreet collapsible: expanding it
+    // reveals the explanation and the tips.
+    await user.click(screen.getByRole('button', { name: /¿Por qué no veo datos?/ }));
+
     expect(
-      screen.getByText(
-        'No todas las estaciones de AEMET disponen de datos históricos completos. Si no aparecen datos para el periodo seleccionado, prueba con otra estación o con un rango de meses diferente.',
-      ),
+      screen.getByText('No todas las estaciones de AEMET disponen de datos históricos completos.'),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText('Cambia el rango de meses: acórtalo o consulta un periodo diferente.'),
     ).toBeInTheDocument();
   });
 
@@ -170,5 +176,27 @@ describe('SearchSection', () => {
 
     expect(await screen.findByTestId('line-chart')).toBeInTheDocument();
     expect(lineChartSpy).toHaveBeenCalled();
+  });
+
+  it('promotes the missing-data info to a card when a search returns no data', async () => {
+    const user = userEvent.setup();
+
+    mockedSearchByDate.mockResolvedValue([]);
+
+    renderSearchSection();
+    await selectPeriodAndStation(user);
+    await user.click(screen.getByRole('button', { name: 'Buscar' }));
+
+    // The card variant is not collapsible, so the tips are visible without
+    // any extra interaction.
+    await waitFor(() => {
+      expect(
+        screen.getByText('No todas las estaciones de AEMET disponen de datos históricos completos.'),
+      ).toBeInTheDocument();
+    });
+    expect(
+      screen.getByText('Prueba con otra estación cercana: suelen cubrir periodos distintos.'),
+    ).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /¿Por qué no veo datos?/ })).toBeNull();
   });
 });
