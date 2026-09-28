@@ -23,7 +23,6 @@ describe('Home', () => {
       </MantineProvider>,
     );
 
-    expect(screen.getByRole('heading', { name: 'Clima histórico' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Buscar' })).toBeInTheDocument();
   });
 });

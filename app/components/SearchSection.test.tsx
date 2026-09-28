@@ -95,7 +95,6 @@ describe('SearchSection', () => {
   it('renders the search form', () => {
     renderSearchSection();
 
-    expect(screen.getByRole('heading', { name: 'Clima histórico' })).toBeInTheDocument();
     expect(screen.getByText('Periodo')).toBeInTheDocument();
     expect(screen.getByText('Estación')).toBeInTheDocument();
     expect(screen.getByText('Comparar con años atrás')).toBeInTheDocument();
@@ -118,6 +117,20 @@ describe('SearchSection', () => {
         'No todas las estaciones de AEMET disponen de datos históricos completos. Si no aparecen datos para el periodo seleccionado, prueba con otra estación o con un rango de meses diferente.',
       ),
     ).toBeInTheDocument();
+  });
+
+  it('hides the how-it-works banner after the first search while keeping the missing-data info section', async () => {
+    const user = userEvent.setup();
+
+    renderSearchSection();
+    await selectPeriodAndStation(user);
+    await user.click(screen.getByRole('button', { name: 'Buscar' }));
+
+    await waitFor(() => {
+      expect(screen.queryByText('Cómo funciona')).not.toBeInTheDocument();
+    });
+
+    expect(screen.getByText('¿Por qué no veo datos?')).toBeInTheDocument();
   });
 
   it('shows the loading overlay while the search action is pending', async () => {

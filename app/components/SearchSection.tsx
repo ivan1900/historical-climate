@@ -1,6 +1,6 @@
 'use client';
 
-import { Autocomplete, Box, Button, Loader, NumberInput, Stack, Text, Title } from '@mantine/core';
+import { Autocomplete, Box, Button, Loader, NumberInput, Stack, Text } from '@mantine/core';
 import { MonthPickerInput } from '@mantine/dates';
 import { useDebouncedValue } from '@mantine/hooks';
 import dayjs from 'dayjs';
@@ -105,16 +105,9 @@ export function SearchSection() {
         py="xl"
         className="flex-1"
       >
-        <HowItWorksBanner />
+        {!hasSearched && <HowItWorksBanner />}
 
         <Stack gap="lg" w={{ base: '90%', md: '30%' }} mx="auto">
-          <Stack gap={4}>
-            <Title order={1}>Clima histórico</Title>
-            <Text c="dimmed">
-              Consulta los datos climáticos históricos de cualquier población española
-            </Text>
-          </Stack>
-
           <form onSubmit={handleSubmit}>
             <Stack gap="lg">
               <MonthPickerInput
