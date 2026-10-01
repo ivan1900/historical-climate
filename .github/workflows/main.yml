@@ -38,6 +38,9 @@ jobs:
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
+      - name: Generate Next.js types
+        run: pnpm exec next typegen
+
       - name: Type check (TypeScript 7)
         run: pnpm exec tsc --noEmit
 
