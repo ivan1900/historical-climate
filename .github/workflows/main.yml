@@ -1,0 +1,86 @@
+name: Deploy Climate
+on:
+  push:
+    tags:
+      - 'v*'
+jobs:
+  deploy:
+    name: 🚀 Deploy Climate
+    runs-on: ubuntu-latest
+    environment: production
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: main
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24.18.0'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate Prisma Client
+        run: npm run prisma:generate
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
+      - name: Type check (TypeScript 7)
+        run: npx tsc --noEmit
+
+      - name: Build Climate
+        run: npm run build
+
+      - name: Update CHANGELOG
+        id: changelog
+        uses: requarks/changelog-action@v1
+        with:
+          token: ${{ github.token }}
+          tag: ${{ github.ref_name }}
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: ${{ github.ref_name }}
+          files: |
+            CHANGELOG.md
+          body_path: CHANGELOG.md
+
+      - name: Install SSH Key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          known_hosts: 'unnecessary'
+
+      - name: Adding Known Hosts
+        run: ssh-keyscan -p ${{secrets.REMOTE_PORT}} -H ${{ secrets.REMOTE_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Make envfile
+        uses: SpicyPizza/create-envfile@v2.0
+        with:
+          envkey_BASE_URL: ${{ vars.AEMET_URL }}
+          envkey_AEMET_API_KEY: ${{ secrets.AEMET_API_KEY }}
+
+      - name: Copy static assets into standalone
+        run: |
+          cp -r .next/static .next/standalone/.next/static
+          cp -r public .next/standalone/public
+
+      - name: Deploy with rsync
+        run: rsync -aRvz -e "ssh -p ${{ secrets.REMOTE_PORT }}" --delete .env .next/standalone ecosystem.config.cjs next.config.mjs ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }}:climate
+
+      - name: Deploy with PM2 ecosystem
+        run: |
+          ssh -p ${{ secrets.REMOTE_PORT }} ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }} '
+            export PATH=$PATH:/home/nodejs/.nvm/versions/node/v24.18.0/bin
+            source ~/.nvm/nvm.sh
+            nvm use v24.18.0
+            cd climate
+            pm2 startOrReload ecosystem.config.cjs --env production
+          '
