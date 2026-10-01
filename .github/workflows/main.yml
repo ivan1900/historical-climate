@@ -83,7 +83,7 @@ jobs:
           cp -r public .next/standalone/public
 
       - name: Deploy with rsync
-        run: rsync -aRvz -e "ssh -p ${{ secrets.REMOTE_PORT }}" --delete .env .next/standalone ecosystem.config.cjs next.config.mjs ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }}:climate
+        run: rsync -aRvz -e "ssh -p ${{ secrets.REMOTE_PORT }}" --delete .env .next/standalone ecosystem.config.cjs ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }}:climate
 
       - name: Deploy with PM2 ecosystem
         run: |
