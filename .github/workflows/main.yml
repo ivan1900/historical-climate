@@ -81,6 +81,7 @@ jobs:
         run: |
           cp -r .next/static .next/standalone/.next/static
           cp -r public .next/standalone/public
+          cp .env .next/standalone/.env
 
       - name: Deploy with rsync
         run: rsync -aRvz -e "ssh -p ${{ secrets.REMOTE_PORT }}" --delete .env .next/standalone ecosystem.config.cjs ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }}:climate
