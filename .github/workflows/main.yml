@@ -76,6 +76,7 @@ jobs:
         with:
           envkey_BASE_URL: ${{ vars.AEMET_URL }}
           envkey_AEMET_API_KEY: ${{ secrets.AEMET_API_KEY }}
+          envkey_DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
       - name: Copy static assets into standalone
         run: |
