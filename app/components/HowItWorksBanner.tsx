@@ -65,6 +65,26 @@ function ComparisonIcon({ size = 20 }: { size?: number }) {
   );
 }
 
+function InfoIcon({ size = 20 }: { size?: number }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 11v5" />
+      <path d="M12 7.5h.01" />
+    </svg>
+  );
+}
+
 function Step({
   number,
   icon,
@@ -151,6 +171,36 @@ export function HowItWorksBanner() {
         <Step number={3} icon={<ComparisonIcon />}>
           Introduce el número de años para comparar con el mismo periodo del pasado (opcional)
         </Step>
+        <Group
+          gap="md"
+          align="flex-start"
+          wrap="nowrap"
+          style={{
+            borderTop: '1px solid var(--mantine-color-default-border)',
+            paddingTop: 'var(--mantine-spacing-md)',
+          }}
+        >
+          <Box
+            style={{
+              width: 36,
+              height: 36,
+              borderRadius: '50%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0,
+              color: 'var(--mantine-color-dimmed)',
+              border: '1px solid var(--mantine-color-default-border)',
+            }}
+          >
+            <InfoIcon />
+          </Box>
+          <Text size="xs" c="dimmed" style={{ flex: 1 }}>
+            Esta es una herramienta de divulgación personal. Los datos se muestran tal cual los
+            publica AEMET, sin validación ni tratamiento adicional. No es un estudio científico ni
+            pretende serlo.
+          </Text>
+        </Group>
       </Stack>
     </Box>
   );

@@ -20,4 +20,14 @@ describe('Footer', () => {
       screen.getByText('Datos obtenidos de AEMET — Agencia Estatal de Meteorología'),
     ).toBeInTheDocument();
   });
+
+  it('renders the personal project disclaimer', () => {
+    renderFooter();
+
+    expect(
+      screen.getByText(
+        'Proyecto personal de divulgación. No es un estudio científico ni pretende serlo.',
+      ),
+    ).toBeInTheDocument();
+  });
 });

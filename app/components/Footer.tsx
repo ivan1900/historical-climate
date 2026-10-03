@@ -13,6 +13,9 @@ export function Footer() {
         <Text size="sm" c="dimmed">
           Datos obtenidos de AEMET — Agencia Estatal de Meteorología
         </Text>
+        <Text size="xs" c="dimmed">
+          Proyecto personal de divulgación. No es un estudio científico ni pretende serlo.
+        </Text>
       </Container>
     </Box>
   );
