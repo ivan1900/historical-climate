@@ -129,16 +129,21 @@ describe('SearchSection', () => {
     ).toBeInTheDocument();
   });
 
-  it('hides the how-it-works banner after the first search while keeping the missing-data info section', async () => {
+  it('collapses the how-it-works banner after the first search while keeping the missing-data info section', async () => {
     const user = userEvent.setup();
 
     renderSearchSection();
     await selectPeriodAndStation(user);
     await user.click(screen.getByRole('button', { name: 'Buscar' }));
 
+    // The banner is animated away with a Collapse, so it is kept mounted in
+    // the DOM while it transitions but is hidden from the accessibility tree
+    // (aria-hidden + inert) as soon as the collapse starts.
     await waitFor(() => {
-      expect(screen.queryByText('Cómo funciona')).not.toBeInTheDocument();
+      expect(screen.queryByRole('heading', { name: 'Cómo funciona' })).not.toBeInTheDocument();
     });
+
+    expect(screen.getByText('Cómo funciona')).toBeInTheDocument();
 
     expect(screen.getByText('¿Por qué no veo datos?')).toBeInTheDocument();
   });
@@ -191,7 +196,9 @@ describe('SearchSection', () => {
     // any extra interaction.
     await waitFor(() => {
       expect(
-        screen.getByText('No todas las estaciones de AEMET disponen de datos históricos completos.'),
+        screen.getByText(
+          'No todas las estaciones de AEMET disponen de datos históricos completos.',
+        ),
       ).toBeInTheDocument();
     });
     expect(

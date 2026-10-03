@@ -1,6 +1,15 @@
 'use client';
 
-import { Autocomplete, Box, Button, Loader, NumberInput, Stack, Text } from '@mantine/core';
+import {
+  Autocomplete,
+  Box,
+  Button,
+  Collapse,
+  Loader,
+  NumberInput,
+  Stack,
+  Text,
+} from '@mantine/core';
 import { MonthPickerInput } from '@mantine/dates';
 import { useDebouncedValue } from '@mantine/hooks';
 import dayjs from 'dayjs';
@@ -105,7 +114,9 @@ export function SearchSection() {
         py="xl"
         className="flex-1"
       >
-        {!hasSearched && <HowItWorksBanner />}
+        <Collapse expanded={!hasSearched}>
+          <HowItWorksBanner />
+        </Collapse>
 
         <Stack gap="lg" w={{ base: '90%', md: '30%' }} mx="auto">
           <form onSubmit={handleSubmit}>
