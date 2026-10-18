@@ -39,8 +39,8 @@ export function SearchSection() {
   const [hasSearched, setHasSearched] = useState(false);
   const [yearsAgo, setYearsAgo] = useState<number | string>('');
   const [isPending, startTransition] = useTransition();
+  const [missingFields, setMissingFields] = useState<string[]>([]);
 
-  const canSearch = Boolean(period[0] && period[1] && selectedStationIdema);
   const yearsAgoNumber = Number(yearsAgo);
 
   const requestRef = useRef(0);
@@ -66,9 +66,20 @@ export function SearchSection() {
     event.preventDefault();
 
     const [from, to] = period;
-    if (!from || !to || !selectedStationIdema) {
+    const missing: string[] = [];
+    if (!from || !to) {
+      missing.push('Periodo');
+    }
+    if (!selectedStationIdema) {
+      missing.push('Estación');
+    }
+
+    if (missing.length > 0) {
+      setMissingFields(missing);
       return;
     }
+
+    setMissingFields([]);
 
     startTransition(async () => {
       const fromDate = dayjs(from, 'YYYY-MM').toDate();
@@ -160,9 +171,16 @@ export function SearchSection() {
                 filter={({ options }) => options}
               />
 
-              <Button type="submit" fullWidth size="md" loading={isPending} disabled={!canSearch}>
+              <Button type="submit" fullWidth size="md" loading={isPending}>
                 Buscar
               </Button>
+
+              {missingFields.length > 0 && (
+                <Text size="sm" c="red" role="alert">
+                  Falta por completar: {missingFields.join(', ')}. Completa estos campos para poder
+                  buscar.
+                </Text>
+              )}
             </Stack>
           </form>
         </Stack>

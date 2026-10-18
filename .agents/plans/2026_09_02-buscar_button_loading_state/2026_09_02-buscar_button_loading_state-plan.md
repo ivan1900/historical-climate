@@ -11,13 +11,13 @@ created_by:
     reasoning_effort: 'medium'
 
 implemented_by:
-  tool: 'Copilot'
+  tool: 'OpenCode'
   model:
-    name: 'GitHub Copilot'
-    version: 'Current (VS Code Chat agent)'
-    reasoning_effort: 'medium'
+    name: 'GLM'
+    version: '5.3-Flash'
+    reasoning_effort: 'low'
 
-last_implementation_at: '2026-09-02T15:52:10Z'
+last_implementation_at: '2026-10-18T22:36:00Z'
 has_completed_all_phases: 'true'
 ---
 
@@ -64,8 +64,20 @@ Wire the Idle `Buscar` button in `app/page.tsx` to the `searchByDate` server act
 - [x] Verify the changes in terms of typechecking, linting and tests using the project's verification command: `pnpm tsc --noEmit`, `pnpm lint`, `pnpm exec oxfmt --check` on the touched files. Fix issues if any.
 - [x] STOP. Present the changes to the user for review and suggest commit messages (or pull request titles, when the phases are implemented through pull requests). Do NOT proceed to the next phase until the user explicitly asks.
 
+### Phase 3: Always-enabled button with missing-fields message
+
+**Description**: The `Buscar` button is always enabled (except while loading); submitting without the required inputs shows a message listing what is missing instead of silently doing nothing.
+
+**To-do actions**:
+
+- [x] Remove the `canSearch` condition and the `disabled` prop from the `Buscar` button in `app/components/SearchSection.tsx` so it stays always enabled (the `loading` lock from Phase 1 is kept).
+- [x] On submit, derive the list of missing required fields (`Periodo`, `Estación`) and store it in a `missingFields` state; when non-empty, stop the search early and render a `role="alert"` message listing what is missing to be able to continue; clear the message when a valid search is submitted.
+- [x] Add tests in `app/components/SearchSection.test.tsx` covering: button always enabled, message listing missing fields, partial message when only the station is missing, and message clearing plus successful search once the form is completed.
+- [x] Verify the changes in terms of typechecking, linting and tests using the project's verification command: `pnpm tsc --noEmit`, `pnpm lint`, `pnpm exec oxfmt --check` on the touched files. Fix issues if any.
+- [x] STOP. Present the changes to the user for review and suggest commit messages (or pull request titles, when the phases are implemented through pull requests). Do NOT proceed to the next phase until the user explicitly asks.
+
 ## ⏭️ Next step
 
 All phases are complete. The next step is to commit the changes (or open a pull request) and store the conversation next to the plan.
 
-Bugs squashed thanks to [Codely](https://codely.com) AI tooling. 🐛 < 🐢 💨
+Form flows polished thanks to [Codely](https://codely.com) AI tooling. 🐢 💨 🌊

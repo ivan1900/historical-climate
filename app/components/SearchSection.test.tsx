@@ -1,6 +1,7 @@
 import { MantineProvider } from '@mantine/core';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import dayjs from 'dayjs';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import searchByDate from '../server/application/searchByDate';
@@ -181,6 +182,55 @@ describe('SearchSection', () => {
 
     expect(await screen.findByTestId('line-chart')).toBeInTheDocument();
     expect(lineChartSpy).toHaveBeenCalled();
+  });
+
+  it('keeps the Buscar button always enabled', () => {
+    renderSearchSection();
+
+    expect(screen.getByRole('button', { name: 'Buscar' })).toBeEnabled();
+  });
+
+  it('shows a message listing the missing fields when searching without completing the form', async () => {
+    const user = userEvent.setup();
+
+    renderSearchSection();
+    await user.click(screen.getByRole('button', { name: 'Buscar' }));
+
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      'Falta por completar: Periodo, Estación.',
+    );
+    expect(mockedSearchByDate).not.toHaveBeenCalled();
+  });
+
+  it('shows only the missing station when the period is selected', async () => {
+    const user = userEvent.setup();
+
+    renderSearchSection();
+    await user.click(screen.getByText('pick-period'));
+    await user.click(screen.getByRole('button', { name: 'Buscar' }));
+
+    expect(await screen.findByRole('alert')).toHaveTextContent('Falta por completar: Estación.');
+    expect(mockedSearchByDate).not.toHaveBeenCalled();
+  });
+
+  it('clears the missing-fields message and searches once the form is completed', async () => {
+    const user = userEvent.setup();
+
+    renderSearchSection();
+    await user.click(screen.getByRole('button', { name: 'Buscar' }));
+    expect(await screen.findByRole('alert')).toBeInTheDocument();
+
+    await selectPeriodAndStation(user);
+    await user.click(screen.getByRole('button', { name: 'Buscar' }));
+
+    await waitFor(() => {
+      expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+    });
+    expect(mockedSearchByDate).toHaveBeenCalledWith(
+      dayjs('2020-01', 'YYYY-MM').toDate(),
+      dayjs('2020-06', 'YYYY-MM').toDate(),
+      '0061',
+    );
   });
 
   it('promotes the missing-data info to a card when a search returns no data', async () => {
