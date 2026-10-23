@@ -21,12 +21,12 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
         with:
-          version: 11.21.0
+          version: 11.28.8
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '24.18.0'
+          node-version: '24.22.1'
           cache: 'pnpm'
           cache-dependency-path: pnpm-lock.yaml
 
@@ -90,9 +90,9 @@ jobs:
       - name: Deploy with PM2 ecosystem
         run: |
           ssh -p ${{ secrets.REMOTE_PORT }} ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }} '
-            export PATH=$PATH:/home/nodejs/.nvm/versions/node/v24.18.0/bin
+            export PATH=$PATH:/home/nodejs/.nvm/versions/node/v24.22.1/bin
             source ~/.nvm/nvm.sh
-            nvm use v24.18.0
+            nvm use v24.22.1
             cd climate
             pm2 startOrReload ecosystem.config.cjs --env production
           '
